@@ -1,0 +1,1 @@
+The purpose of this folder is to collect documents and references to external sources of information for the CEO position. The founder or CEO for this class is the student who makes the decisions in cases where the team does not naturally agree on an issue or decision. 

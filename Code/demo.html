@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JobsForStudents</title>
+    <!-- import buttons -->
+    <!--<link rel="stylesheet" href="css/buttons.css"> -->
+
+    <script src="./jquery-1.8.2.min.js"></script>
+    <style>
+        *{
+            list-style: none;
+            padding:0;
+            margin:0;
+        }
+        div{
+            text-align: center;
+            padding-top:20px;
+        }
+        ul{
+            padding-top:20px;
+            width:30%;
+            margin:0 50% 0 35%;
+        }
+        li{
+            padding:3px;
+            border:1px solid silver;
+            box-shadow: 1px 1px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <button href="#">log in</button>
+    <button href="./logoff.html">log off</button>
+</div>
+<div>
+    Add a job: <br>
+    Job title: <input type="text" id="content"></input>
+    <br>
+    Job link: <input type="text" id="link"></input>
+    <br>
+    <input id="submit" type="submit" value="Submit"/>
+    <br>
+</div>
+<!--
+<div>
+    Submitted: <input id="submitted" type="text" name="submitted"/>
+</div>
+-->
+
+<div>
+    <input type="text" id="txt" placeholder="search">
+    <!-- <button type="button" id="btn">search</button> -->
+    <ul id="list">
+    </ul>
+</div>
+<script>
+    var oTxt = document.getElementById('txt');
+    //var oBtn = document.getElementById('btn');
+    var oList = document.getElementById('list');
+
+    var fruits = [{'text': 'Makerspace Student Engineer', 'url': 'https://www.wm.edu/as/appliedscience'},
+                  {'text': 'Tribe Athletics Media Relations Student Assistants', 'url': 'http://www.tribeathletics.com/',},
+                  {'text': 'Student Equipment Manager', 'url': 'mailto:sjvernarsky@wm.edu'},
+                  {'text': 'Student Assistant/Video Assistant', 'url': 'mailto:hahend@wm.edu'},
+                  {'text': 'Intramural Sports Official', 'url': 'http://www.wm.edu/offices/wellness/campusrec/imsports/officials/index.php'},
+                  {'text': 'Lifeguard', 'url': 'http://www.wm.edu/offices/wellness/campusrec/student-employment/index.php'},
+                  {'text': 'Pre Collegiate Learner Programs Assistant', 'url': 'https://education.wm.edu/centers/cfge/'},
+                  {'text': 'Conference Services Ambassador', 'url': 'https://www.wm.edu/offices/auxiliary/conferenceservices/aboutus/summer-employment/index.php'},
+                  {'text': 'Communications Intern', 'url': 'http://mason.wm.edu/'},
+                  {'text': 'Program & Outreach Assistant', 'url': 'https://www.wm.edu/offices/global-research'},
+                  {'text': 'Level 1 Support Technician', 'url': 'https://www.wm.edu/offices/it/services/support/tsc/studentemployment/index.php'},
+                  {'text': 'Window Service Clerk', 'url': 'https://www.wm.edu/offices/facilities/services/postalservices/index.php'},
+                  {'text': 'Digital Marketing Coordinator', 'url': 'http://mason.wm.edu/'},
+                  {'text': 'Marketing Content Assistant', 'url': 'http://mason.wm.edu/'},
+                  {'text': 'MBA Programs Student Assistant', 'url': 'http://mason.wm.edu/'},
+                  {'text': 'Office Assistant', 'url': 'mailto:charee.ellison@mason.wm.edu'},
+                  {'text': 'Miller Hall Building Support', 'url': 'mailto:josh.andelin@mason.wm.edu'},
+                  {'text': 'Research Assistant (Medicare)', 'url': 'https://www.wm.edu/as/publicpolicy/schroedercenter/news/schroeder-center-announces-two-summer-research-assistant-openings.php'},
+                  {'text': 'Research Assistant (School Health Initiative Project)', 'url': 'https://www.wm.edu/as/publicpolicy/schroedercenter/news/schroeder-center-announces-two-summer-research-assistant-openings.php'},
+                  {'text': 'Box Office Associate', 'url': 'http://www.wm.edu/tsd'},
+                  {'text': 'Advancement Interns', 'url': 'https://advancement.wm.edu/come-work-with-us/internships/'}];
+    /*
+    // when click ...
+    oBtn.addEventListener('click', function(){
+        var keyWord = oTxt.value;
+        // var fruitList = searchByIndexOf(keyWord,fruits);
+        console.log(positions);
+        var fruitList = searchByRegExp(keyWord, fruits);
+        renderFruits(fruitList);
+    }, false);
+    */
+
+    // when entering '\n' ...
+    oTxt.addEventListener('keydown', function(e) {
+        if(e.keyCode == 13){
+            var keyWord = oTxt.value.toLowerCase();
+            var fruitList = searchByIndexOf(keyWord,fruits);
+            // var fruitList = searchByRegExp(keyWord, fruits);
+            renderFruits(fruitList);
+        }
+    }, false);
+    var cpLock = false;
+    $('#txt').on('compositionstart', function () {
+        cpLock = true;
+    });
+    $('#txt').on('compositionend', function () {
+        cpLock = false;
+        var keyWord = oTxt.value;
+        var fruitList = searchByIndexOf(keyWord,fruits);
+        renderFruits(fruitList);
+    });
+    $('#txt').on('input', function () {
+        if (!cpLock) {
+            var keyWord = oTxt.value;
+            var fruitList = searchByIndexOf(keyWord,fruits);
+            renderFruits(fruitList);
+        }
+    });
+    function renderFruits(list) {
+        if(!(list instanceof Array)){
+            return ;
+        }
+        oList.innerHTML = '';
+        var len = list.length;
+        var item = null;
+        for(var i=0;i<len;i++){
+            item = document.createElement('li');
+            item.innerHTML = '<a href="' + list[i]['url'] + '">' + list[i]['text'] + '</a>';
+            oList.appendChild(item);
+        }
+    }
+
+    // searching using `indexOf`
+    function searchByIndexOf(keyWord, list){
+        if(!(list instanceof Array)){
+            return ;
+        }
+        var len = list.length;
+        var arr = [];
+        for(var i=0;i<len;i++){
+            //如果字符串中不包含目标字符会返回-1
+            if(list[i]['text'].toLowerCase().indexOf(keyWord)>=0){
+                arr.push(list[i]);
+            }
+        }
+        return arr;
+    }
+
+    /*
+    // searching using `RegExp`
+    function searchByRegExp(keyWord, list){
+        if(!(list instanceof Array)){
+            return ;
+        }
+        var len = list.length;
+        var arr = [];
+        var reg = new RegExp(keyWord);
+        for(var i=0;i<len;i++){
+        	// if the target strings are not included, return -1
+            if(list[i]['text'].match(reg)){
+                arr.push(list[i]);
+            }
+        }
+        return arr;
+    }
+    */
+    renderFruits(fruits);
+
+    $('#submit').click(function() {
+        jobTitle = $('#content').val();
+        jobLink = $('#link').val();
+        if(jobTitle) {
+            //console.log(val);
+            //$('#submitted').val(val);
+
+            $('#content').val('');
+            $('#link').val('');
+            /*
+            var newJob = [{'text': jobTitle, 'url': jobLink}];
+            fruits.push(newJob);
+            renderFruits(fruits);
+            */
+
+
+            var list = document.getElementById("list");
+            var listItem = document.createElement("li");
+            listItem.setAttribute("id", "new-job");
+            listItem.appendChild(document.createTextNode(jobTitle));
+            list.insertBefore(listItem, list.childNodes[0]);
+
+        }
+    });
+</script>
+</body>
+</html>

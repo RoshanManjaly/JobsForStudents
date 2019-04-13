@@ -1,0 +1,1 @@
+The purpose of this folder is to collect documents and references to external sources of information for the PO position. The Product Owner (PO) for this class is like the problem expert. 

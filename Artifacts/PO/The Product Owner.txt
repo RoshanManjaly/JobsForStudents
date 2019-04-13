@@ -1,0 +1,10 @@
+https://medium.com/swlh/product-owner-development-team-and-business-value-54a6f8fa6862
+
+
+This article discusses various definitions of what and who a product owner is that are useful to note: 
+
+It pulls this definition from scrum.org: “The Product Owner is responsible for maximizing the value of the product resulting from work of the Development Team. How this is done may vary widely across organizations, Scrum Teams, and individuals.”
+
+It pulls this definition from Mike Cohn: “The Scrum product owner is typically a project’s key stakeholder. Part of the product owner responsibilities is to have a vision of what he or she wishes to build, and convey that vision to the scrum team. This is key to successfully starting any agile software development project. The agile product owner does this in part through the product backlog, which is a prioritized features list for the product.”
+
+Throughout the entire document, one thing is clear and important to remember - the role of the PO is to give something with priority and value to the development team to work on. 
